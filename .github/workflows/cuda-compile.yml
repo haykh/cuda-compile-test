@@ -9,19 +9,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install CUDA
-        uses: Jimver/cuda-toolkit@v0.2.8
-        id: cuda-toolkit
-        with:
-          cuda: "11.7.0"
+      - name: Install CMake
+        uses: ssrobins/install-cmake@v1
+
+      # - name: Install CUDA
+      #   uses: Jimver/cuda-toolkit@v0.2.8
+      #   id: cuda-toolkit
+      #   with:
+      #     cuda: "11.7.0"
 
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-      - name: Compile CUDA code
+      - name: Configure
         run: |
-          nvcc vadd.cu -o vadd
+          cmake -B build -D Kokkos_ENABLE_CUDA=OFF -D Kokkos_ENABLE_CUDA_LAMBDA=OFF
 
-      - name: Run CUDA binary
+      - name: Build
         run: |
-          ./vadd
+          cd build && make -j
+
+      - name: Test
+        run: |
+          ./src/test.xc
+
+      # - name: Compile CUDA code
+      #   run: |
+      #     nvcc vadd.cu -o vadd
+
+      # - name: Run CUDA binary
+      #   run: |
+      #     ./vadd
