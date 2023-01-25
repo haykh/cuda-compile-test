@@ -13,6 +13,6 @@ jobs:
       #- run: echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
       - run: echo "Hello world"
 
-      - run: echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+      #- run: echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
 
       - run: nvcc -V
