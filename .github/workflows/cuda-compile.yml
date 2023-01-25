@@ -16,7 +16,7 @@ jobs:
         uses: Jimver/cuda-toolkit@v0.2.8
         id: cuda-toolkit
         with:
-          cuda: "11.0.0"
+          cuda: "11.7.0"
           method: network
           sub-packages: '["nvcc"]'
           linux-local-args: '["--toolkit"]'
@@ -26,22 +26,18 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Configure
+      - name: Configure/build with CUDA
         run: |
           cmake -B build -D Kokkos_ARCH_AMPERE86=ON
+          cd build
+          make -j
 
-      - name: Build
+      - name: Intermediate clean
         run: |
-          cd build && make -j
+          rm -rf build
 
-      - name: Test
+      - name: Configure/build without CUDA
         run: |
-          ./build/test.xc
-
-      # - name: Compile CUDA code
-      #   run: |
-      #     nvcc vadd.cu -o vadd
-
-      # - name: Run CUDA binary
-      #   run: |
-      #     ./vadd
+          cmake -B build -D Kokkos_ENABLE_CUDA=OFF -D Kokkos_ENABLE_CUDA_LAMBDA=OFF
+          cd build
+          make -j
