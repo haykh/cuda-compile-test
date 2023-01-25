@@ -12,11 +12,11 @@ jobs:
       - name: Install CMake
         uses: ssrobins/install-cmake@v1
 
-      # - name: Install CUDA
-      #   uses: Jimver/cuda-toolkit@v0.2.8
-      #   id: cuda-toolkit
-      #   with:
-      #     cuda: "11.7.0"
+      - name: Install CUDA
+        uses: Jimver/cuda-toolkit@v0.2.8
+        id: cuda-toolkit
+        with:
+          cuda: "11.7.0"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B build -D Kokkos_ENABLE_CUDA=OFF -D Kokkos_ENABLE_CUDA_LAMBDA=OFF
+          cmake -B build
 
       - name: Build
         run: |
