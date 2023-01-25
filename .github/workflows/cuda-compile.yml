@@ -1,18 +1,27 @@
-name: Cuda compilation test
-on: [push]
+name: CUDA Compilation Test
+
+on:
+  push:
+    branches: [master]
 
 jobs:
-  compile-test:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: Jimver/cuda-toolkit@v0.2.8 
-        id: cuda-toolkit 
-        with:
-          cuda: '11.7.0'
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      #- run: echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-      - run: echo "Hello world"
+      - name: Set up CUDA
+        run: |
+          export CUDA_HOME=/usr/local/cuda
+          export PATH=$CUDA_HOME/bin:$PATH
+          export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-      #- run: echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+      - name: Compile CUDA code
+        run: |
+          nvcc vadd.cu -o vadd
 
-      - run: nvcc -V
+      - name: Run CUDA binary
+        run: |
+          ./vadd
