@@ -33,7 +33,7 @@ jobs:
 
       - name: Test
         run: |
-          ./build/src/test.xc
+          ./build/test.xc
 
       # - name: Compile CUDA code
       #   run: |
