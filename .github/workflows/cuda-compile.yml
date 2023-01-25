@@ -17,9 +17,12 @@ jobs:
         id: cuda-toolkit
         with:
           cuda: "11.7.0"
+          method: network
+          sub-packages: '["nvcc"]'
+          linux-local-args: '["--toolkit"]'
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
